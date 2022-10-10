@@ -1,4 +1,9 @@
 from pathlib import Path
+import os #++
+import environ #++
+
+env = environ.Env() #++
+environ.Env.read_env() #++
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -8,12 +13,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_f7=*64m$&4dyts1a7aos#0q*r71yp7jsq-v58vp_$t+#rqmxx'
+SECRET_KEY = os.environ.get('SECRET_KEY') #++ #la clave secreata esta en .env
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG') #++
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] #++
 
 
 # Application definition
@@ -25,6 +30,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'core', #++
+    'blog', #++
 ]
 
 MIDDLEWARE = [
@@ -42,7 +50,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')], #++
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -55,8 +63,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'core.wsgi.application'
-
+WSGI_APPLICATION = 'core.wsgi.application' 
+#wsgi significa que nuestra app en general se pueda entender en el servidor 
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -72,6 +80,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
+#passrod validators es para validar las contraseñas
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
